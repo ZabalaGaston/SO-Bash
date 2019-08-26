@@ -22,18 +22,19 @@ if ! [ -r "$1" ]; then
  # Si no cumple la condicion, muestra un mensaje de error
 elif test -f $1 && (test $2 = "L" || test $2 = "C" || test $2 = "M"); then
  if test $2 = "L"; then
- res=`wc –l $1`
- echo "Número de líneas: $res"
+    res="$( wc -l $1 )"  
+    echo "Numero de líneas: $res"
  elif test $2 = "C"; then
- res=`wc –m $1`
- echo "Número de caracteres: $res"
-  elif test $2 = "M"; then
- res=`wc –L $1`
- echo "Longitud de la línea más larga: $res"
+    res="$( wc -m $1 )" 
+    echo "Número de caracteres: $res"
+elif test $2 = "M"; then
+    res="$( wc -L $1 )"
+    echo "Longitud de la línea más larga: $res"
  fi
 else
  ErrorS
 fi
+
 
 #Responda:
 #a) ¿Cuál es el objetivo de este script?

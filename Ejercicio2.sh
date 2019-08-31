@@ -1,5 +1,5 @@
 #FALTA RECURSIVIDAD!!!
-
+# sed -i 's/\r$//' filename
 # mkdir carpeta1
 # cd carpeta1
 # touch "ejercicio     .txt"
@@ -21,12 +21,12 @@
 # Funciones
 function ayuda(){
 	echo ""
-    echo "Uso: ./Ejercicio2.sh directorio_recorrer -r[Opcional]"
-    echo "Reemplaza espacios en blanco por un guión bajo, en el nombre de los archivos"
-    echo -e "   Parametros"
+    	echo "Uso: ./Ejercicio2.sh directorio_recorrer -r[Opcional]"
+    	echo "Reemplaza espacios en blanco por un guión bajo, en el nombre de los archivos"
+    	echo -e "   Parametros"
 	echo -e "   \directorio_recorrer : directorio donde se buscan los archivos"
 	echo -e "   -r [Opcional], permite recorrer el directorio recursivamente "
-    exit
+	exit
 }
 
 function func_MostrarMensajeErrorParametros
@@ -41,6 +41,7 @@ function func_esRecursiva
 		func_MostrarMensajeErrorParametros
 		exit
 	fi
+	r="-maxdepth 1"
 }
 
 function func_ValidarDirectorio
@@ -91,50 +92,50 @@ func_validarParametros $1 $2
 aBuscar=' '
 aReemplazar='_'
 
-for j in `find $1 -name "*$aBuscar*"`
+for j in `find $1 $r -name "*$aBuscar*"`
 do
 
- pathNuevo=$j;
- pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
-        ruta=""
-        pos=0
-        nombre=""
-    }
-    {
-        split($NF,name," ")
+ 	pathNuevo=$j;
+	pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
+		ruta=""
+        	pos=0
+        	nombre=""
+		}
+   		{
+        		split($NF,name," ")
 
-        #Obtengo la cantidad de posiciones
-        for (x in name){
-            pos++
-        }
+        		#Obtengo la cantidad de posiciones
+        		for (x in name){
+            			pos++
+        		}
 
-        #recorro hasta la ante ultima posicion
-        for (n=0;n<pos-1;n++){
-            nombre=nombre name[n+1] "_"
-        }
+        		#recorro hasta la ante ultima posicion
+        		for (n=0;n<pos-1;n++){
+            			nombre=nombre name[n+1] "_"
+        		}
 
-        #Le concateno la ultima parte
-        nombre=nombre name[pos]
+        		#Le concateno la ultima parte
+        		nombre=nombre name[pos]
 
-        #Rearmo la ruta
-        for(i=1;i<NF;i++){
-            ruta=ruta $i "/"
-        }
+        		#Rearmo la ruta
+        		for(i=1;i<NF;i++){
+            			ruta=ruta $i "/"
+        		}
 
-    print ruta""nombre}')
+    			print ruta""nombre}')
 
-    add=0
-    pAux=$pathNuevo
-    while [ -f $pathNuevo ]
-    do
-        add=`expr $add + 1`
-        pathNuevo=$pAux$add 
-    done
+	add=0
+	pAux=$pathNuevo
+	while [ -f $pathNuevo ]
+	do
+		add=`expr $add + 1`
+        	pathNuevo=$pAux$add 
+	done
 
-    echo "Viejo: " $j
-    echo "Nuevo: " $pathNuevo
+    	echo "Viejo: " $j
+    	echo "Nuevo: " $pathNuevo
     
-    mv $j $pathNuevo
+    	mv $j $pathNuevo
 done
 
 ##################################################

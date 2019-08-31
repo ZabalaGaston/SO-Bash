@@ -1,3 +1,12 @@
+# Trabajo práctico N1 Ejercicio 1
+# Script: Ejercicio1.sh
+# Integrantes:
+# Zabala, Gaston        34614948
+# Pessolani, Agustin	39670584
+# Cela, Pablo           XXXXXXXX
+# Sullca, Fernando      XXXXXXXX
+# yyyyyy, David         XXXXXXXX
+
 ErrorS()
 {
     echo "Error. La sintaxis del script es la siguiente:"

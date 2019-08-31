@@ -1,4 +1,7 @@
-#FALTA RECURSIVIDAD!!!
+#Pendiente
+#si dos archivos se llaman igual, le agrega un numero al final. Agregarlo antes de la extension
+
+
 # sed -i 's/\r$//' filename
 # mkdir carpeta1
 # cd carpeta1
@@ -68,13 +71,17 @@ function func_validarParametros
 		exit
 	fi
 	
-    if test $# -eq 0 || test $# -gt 2 ; then
+    if test $# -gt 2 ; then
         func_MostrarMensajeErrorParametros  
         exit 
     fi
 
-	func_ValidarDirectorio $1
-	func_esRecursiva $1 $2
+    if test $# -eq 0; then
+		path='.'
+    fi
+
+	func_ValidarDirectorio $path
+	func_esRecursiva $path $2
 }
 
 #Agregamos para que los directorios funcionen con espacios
@@ -85,22 +92,29 @@ function func_ConfiguracionDirectorio
 
 ############################################MAIN##########################################################
 
+path=$1
 func_ConfiguracionDirectorio
-func_validarParametros $1 $2
+func_validarParametros $path $2
 
 aBuscar=' '
 aReemplazar='_'
 
-for j in `find $1 -name "*$aBuscar*"`
+cModificados=0
+
+for j in `find $path -name "*$aBuscar*"`
 do
 
  	pathNuevo=$j;
-	pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
-		ruta=""
+	dname=`dirname $j`    
+
+	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]))
+	then
+		pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
+			ruta=""
         	pos=0
         	nombre=""
-		}
-   		{
+			}
+   			{
         		split($NF,name," ")
 
         		#Obtengo la cantidad de posiciones
@@ -121,20 +135,23 @@ do
             			ruta=ruta $i "/"
         		}
 
-    			print ruta""nombre}')
+    		print ruta""nombre}')
 
-	add=0
-	pAux=$pathNuevo
-	while [ -f $pathNuevo ]
-	do
-		add=`expr $add + 1`
+		add=0
+		pAux=$pathNuevo
+		while [ -f $pathNuevo ]
+		do
+			add=`expr $add + 1`
         	pathNuevo=$pAux$add 
-	done
+		done
 
-    	echo "Viejo: " $j
-    	echo "Nuevo: " $pathNuevo
-    
-    	mv $j $pathNuevo
+		mv $j $pathNuevo
+		echo "Viejo -r: " $j
+    	echo "Nuevo -r: " $pathNuevo
+		cModificados=`expr $cModificados + 1`
+	fi
 done
+
+echo "Cantidad de modificados: "$cModificados
 
 ##################################################

@@ -38,8 +38,8 @@ function func_esRecursiva
 {
 	if [ $# == 2 ] && [ "$2" != "-r" ]
 	then
-			func_MostrarMensajeErrorParametros
-			exit
+		func_MostrarMensajeErrorParametros
+		exit
 	fi
 }
 
@@ -64,8 +64,8 @@ function func_validarParametros
 {
 	if [ "$1" == "-h" ] || [ "$1" == "-?" ] || [ "$1" == "--help" ]
 	then
-			ayuda
-			exit
+		ayuda
+		exit
 	fi
 	
     if test $# -eq 0 || test $# -gt 2 ; then
@@ -101,27 +101,28 @@ do
         nombre=""
     }
     {
-      split($NF,name," ")
+        split($NF,name," ")
 
-      #Obtengo la cantidad de posiciones
-      for (x in name){
-        pos++
-      }
+        #Obtengo la cantidad de posiciones
+        for (x in name){
+            pos++
+        }
 
-      #recorro hasta la ante ultima posicion
-      for (n=0;n<pos-1;n++){
-        nombre=nombre name[n+1] "_"
-      }
+        #recorro hasta la ante ultima posicion
+        for (n=0;n<pos-1;n++){
+            nombre=nombre name[n+1] "_"
+        }
 
-      #Le concateno la ultima parte
-      nombre=nombre name[pos]
+        #Le concateno la ultima parte
+        nombre=nombre name[pos]
 
-      #Rearmo la ruta
-      for(i=1;i<NF;i++){
-        ruta=ruta $i "/"
-      }
+        #Rearmo la ruta
+        for(i=1;i<NF;i++){
+            ruta=ruta $i "/"
+        }
 
-print ruta""nombre}')
+    print ruta""nombre}')
+
     add=0
     pAux=$pathNuevo
     while [ -f $pathNuevo ]

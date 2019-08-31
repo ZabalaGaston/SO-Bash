@@ -1,5 +1,14 @@
 #FALTA RECURSIVIDAD!!!
 
+# mkdir carpeta1
+# cd carpeta1
+# touch "ejercicio     .txt"
+# touch "ejercicio   .txt"
+# cd ..
+# chmod 777 Ejercicio2.sh
+# ./Ejercicio2.sh ./carpeta1 -r
+
+
 # Trabajo práctico N1 Ejercicio 2 
 # Script: Ejercicio2.sh
 # Integrantes:

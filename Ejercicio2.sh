@@ -41,7 +41,6 @@ function func_esRecursiva
 		func_MostrarMensajeErrorParametros
 		exit
 	fi
-	r="-maxdepth 1"
 }
 
 function func_ValidarDirectorio
@@ -92,7 +91,7 @@ func_validarParametros $1 $2
 aBuscar=' '
 aReemplazar='_'
 
-for j in `find $1 $r -name "*$aBuscar*"`
+for j in `find $1 -name "*$aBuscar*"`
 do
 
  	pathNuevo=$j;

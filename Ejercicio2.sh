@@ -1,6 +1,11 @@
-#Pendiente
-#si dos archivos se llaman igual, le agrega un numero al final. Agregarlo antes de la extension
-
+# Trabajo práctico N1 Ejercicio 2 
+# Script: Ejercicio2.sh
+# Integrantes:
+# Zabala, Gaston        34614948
+# Pessolani, Agustin	39670584
+# Cela, Pablo           XXXXXXXX
+# Sullca, Fernando      XXXXXXXX
+# yyyyyy, David         XXXXXXXX
 
 # sed -i 's/\r$//' filename
 # mkdir carpeta1
@@ -10,16 +15,6 @@
 # cd ..
 # chmod 777 Ejercicio2.sh
 # ./Ejercicio2.sh ./carpeta1 -r
-
-
-# Trabajo práctico N1 Ejercicio 2 
-# Script: Ejercicio2.sh
-# Integrantes:
-# Zabala, Gaston        34614948
-# Pessolani, Agustin	39670584
-# Cela, Pablo           XXXXXXXX
-# Sullca, Fernando      XXXXXXXX
-# yyyyyy, David         XXXXXXXX
 
 # Funciones
 function ayuda(){
@@ -139,15 +134,31 @@ do
 
 		add=0
 		pAux=$pathNuevo
+		# Valido que el archivo no exista
+		# Si existe, le agrego un numero al nombre del archivo, antes de la extension (si tiene), 
+		# o al final del archivo
 		while [ -f $pathNuevo ]
 		do
 			add=`expr $add + 1`
-        	pathNuevo=$pAux$add 
+
+			_dir=${pAux%/*}"/"
+			_arch=${pAux##*/}
+
+			if [[ $_arch =~ "." ]]
+				then
+				_sinExt=${_arch%%.*}
+				_ext="."${_arch##*.}
+				_dirOk=$_sinExt""$add""$_ext
+			else
+				_dirOk=$_arch""$add
+			fi
+
+			pathNuevo=$_dir""$_dirOk
 		done
 
 		mv $j $pathNuevo
-		echo "Viejo -r: " $j
-    	echo "Nuevo -r: " $pathNuevo
+		echo "Viejo: " $j
+    	echo "Nuevo: " $pathNuevo
 		cModificados=`expr $cModificados + 1`
 	fi
 done

@@ -1,19 +1,3 @@
-#   ______________
-#   ______________
-#   _____//.......
-#   ______________
-#   //............
-#   _____/*.......
-#   ............*/
-#   /*..........*/
-#   /*............
-#   ............*/
-#   /*............
-#   ....*/________
-#   _____/*.......
-#   ....*/________
-
-
 # Trabajo práctico N1 Ejercicio 4 
 # Script: Ejercicio4.sh
 # Integrantes:
@@ -70,7 +54,6 @@ function func_validarParametros
 {
 	if [ "$1" == "-h" ] || [ "$1" == "-?" ] || [ "$1" == "--help" ]
 	then
-    echo "entro aca!"
 		ayuda
 		exit
 	fi
@@ -90,9 +73,24 @@ function obtenerCantLineas(){
 }
 
 function obtenerCantLineasComentadas(){
-  _AuxcantLineasComentadas=$(awk 'BEGIN{cant=0}{
-     if($0 ~ "//")
-       cant=100;
+  _AuxcantLineasComentadas=$(awk '
+    BEGIN{cant=0;
+       flag=0
+    }
+    {
+      if($0 ~ "^//")
+        cant+=100;
+     
+      if($0 ~ "/$" && flag == 1){  
+        cant+=1;
+        flag=0;
+      }
+
+      #Esta condicion no está funcionando
+      if($0 ~ "^/*"){  
+        cant+=1;
+        flag=1;
+      }
     }
     END{
      print cant;
@@ -120,8 +118,8 @@ function acumularCantLineasCodigo(){
 
 func_validarParametros $1
 
-aBuscar='.txt'
-path='.'
+aBuscar=$2
+path=$1
 cantLineas=0
 cantArchivos=0
 acumCantLineasComentadas=0

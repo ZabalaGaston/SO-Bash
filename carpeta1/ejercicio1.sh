@@ -13,6 +13,7 @@ ErrorS()
     echo "Obtener número de líneas: $0 nombre_archivo L"
     echo "Obtener número de caracteres: $0 nombre_archivo C"
     echo "Obtener longitud de la línea más larga: $0 nombre_archivo M"
+    exit
 }
 ErrorP()
 {
@@ -28,7 +29,7 @@ if ! [ -r "$1" ]; then
  ErrorP
  # Valida si el parametro1 es un archivo y el parametro2 es L ó C ó M.
  # Si no cumple la condicion, muestra un mensaje de error
-elif test -f $1 && (test $2 = "L" || test $2 = "C" || test $2 = "M"); then
+elif test -f $1 && (test "$2" = "L" || test "$2" = "C" || test "$2" = "M"); then
  if test $2 = "L"; then
     res=` wc -l $1 `  
     echo "Numero de líneas: $res"

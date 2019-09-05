@@ -2,8 +2,8 @@
 # Script: Ejercicio1.sh
 # Integrantes:
 # Zabala, Gaston        34614948
-# Pessolani, Agustin	39670584
-# Cela, Pablo           XXXXXXXX
+# Pessolani, Agustin	  39670584
+# Cela, Pablo           36166867
 # Sullca, Fernando      XXXXXXXX
 # yyyyyy, David         XXXXXXXX
 
@@ -31,10 +31,10 @@ if ! [ -r "$1" ]; then
  # Si no cumple la condicion, muestra un mensaje de error
 elif test -f $1 && (test "$2" = "L" || test "$2" = "C" || test "$2" = "M"); then
  if test $2 = "L"; then
-    res=` wc -l $1 `  
+    res=` wc -l $1 `
     echo "Numero de líneas: $res"
  elif test $2 = "C"; then
-    res=` wc -m $1 ` 
+    res=` wc -m $1 `
     echo "Número de caracteres: $res"
 elif test $2 = "M"; then
     res=` wc -L $1 `
@@ -47,7 +47,7 @@ fi
 
 #Responda:
 #a) ¿Cuál es el objetivo de este script?
-    # El objetivo del script es realizar alguna acción en base al parámetro ingresado. 
+    # El objetivo del script es realizar alguna acción en base al parámetro ingresado.
 #b) ¿Qué parámetros recibe?
     # Recibe el nombre del script, nombre del archivo e instrucción a realizar para con el archivo.
 #c) Comentar el código según la funcionalidad (no describa los comandos, indique la lógica)
@@ -60,9 +60,9 @@ fi
     # $$: Brinda el id del proceso.
     # $*: Brinda la linea completa de ejecución.
 
-# f) Explique las diferencias entre los distintos tipos de comillas que se pueden utilizar en Shell scripts. 
+# f) Explique las diferencias entre los distintos tipos de comillas que se pueden utilizar en Shell scripts.
 
-#   `` -->  Si dentro de un script escribo un comando dentro de estas comillas, el bash primero reemplazará dentro de la línea 
+#   `` -->  Si dentro de un script escribo un comando dentro de estas comillas, el bash primero reemplazará dentro de la línea
 #   este comando por la salida estándar de la ejecución de éste. Una vez que esto esté terminado recién ejecutará la linea
 
 #   "" --> Interpreta las referencias a variable, las explosiona, poniendo en su lugar su contenido.

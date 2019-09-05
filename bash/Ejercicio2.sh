@@ -1,9 +1,9 @@
-# Trabajo práctico N1 Ejercicio 2 
+# Trabajo práctico N1 Ejercicio 2
 # Script: Ejercicio2.sh
 # Integrantes:
 # Zabala, Gaston        34614948
-# Pessolani, Agustin	39670584
-# Cela, Pablo           XXXXXXXX
+# Pessolani, Agustin		39670584
+# Cela, Pablo           36166857
 # Sullca, Fernando      XXXXXXXX
 # yyyyyy, David         XXXXXXXX
 
@@ -44,18 +44,18 @@ function func_esRecursiva
 function func_ValidarDirectorio
 {
 	path=$1
-   
+
    	if ! test -e $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no existente"
 		exit
 	fi
-	
+
 	if ! test -d $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no es directorio"
 		exit
-	fi	
+	fi
 }
 
 function func_validarParametros
@@ -65,10 +65,10 @@ function func_validarParametros
 		ayuda
 		exit
 	fi
-	
+
     if test $# -gt 2 ; then
-        func_MostrarMensajeErrorParametros  
-        exit 
+        func_MostrarMensajeErrorParametros
+        exit
     fi
 
     if test $# -eq 0; then
@@ -100,7 +100,7 @@ for j in `find $path -name "*$aBuscar*"`
 do
 
  	pathNuevo=$j;
-	dname=`dirname $j`    
+	dname=`dirname $j`
 
 	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]))
 	then
@@ -135,7 +135,7 @@ do
 		add=0
 		pAux=$pathNuevo
 		# Valido que el archivo no exista
-		# Si existe, le agrego un numero al nombre del archivo, antes de la extension (si tiene), 
+		# Si existe, le agrego un numero al nombre del archivo, antes de la extension (si tiene),
 		# o al final del archivo
 		while [ -f $pathNuevo ]
 		do

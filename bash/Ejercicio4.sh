@@ -1,9 +1,9 @@
-# Trabajo práctico N1 Ejercicio 4 
+# Trabajo práctico N1 Ejercicio 4
 # Script: Ejercicio4.sh
 # Integrantes:
 # Zabala, Gaston        34614948
-# Pessolani, Agustin	39670584
-# Cela, Pablo           XXXXXXXX
+# Pessolani, Agustin		39670584
+# Cela, Pablo           36166857
 # Sullca, Fernando      XXXXXXXX
 # yyyyyy, David         XXXXXXXX
 
@@ -36,18 +36,18 @@ function func_MostrarMensajeErrorParametros
 function func_ValidarDirectorio
 {
 	path=$1
-   
+
    	if ! test -e $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no existente"
 		exit
 	fi
-	
+
 	if ! test -d $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no es directorio"
 		exit
-	fi	
+	fi
 }
 
 function func_validarParametros
@@ -57,10 +57,10 @@ function func_validarParametros
 		ayuda
 		exit
 	fi
-	
+
     if test $# -gt 2 ; then
-        func_MostrarMensajeErrorParametros  
-        exit 
+        func_MostrarMensajeErrorParametros
+        exit
     fi
 
 	func_ValidarDirectorio $1
@@ -80,14 +80,14 @@ function obtenerCantLineasComentadas(){
     {
       if($0 ~ "^//")
         cant+=100;
-     
-      if($0 ~ "/$" && flag == 1){  
+
+      if($0 ~ "/$" && flag == 1){
         cant+=1;
         flag=0;
       }
 
       #Esta condicion no está funcionando
-      if($0 ~ "^/*"){  
+      if($0 ~ "^/*"){
         cant+=1;
         flag=1;
       }

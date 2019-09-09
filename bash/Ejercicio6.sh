@@ -4,7 +4,7 @@
 # Zabala, Gaston        34614948
 # Pessolani, Agustin	  39670584
 # Cela, Pablo           36166867
-# Sullca, Fernando      XXXXXXXX
+# Sullca, Fernando      37841788
 # yyyyyy, David         XXXXXXXX
 # Funciones
 base_path=$(pwd)
@@ -15,7 +15,7 @@ declare -a counts=()
 declare -a sizes=()
 index=0
 
-function ayuda {
+ayuda () {
   echo "Uso: ./Ejercicio6.sh directorio_a_recorrer"
   echo "Programa que informa: "
 	echo "Una lista con los 10 subdirectorios mas largos y con mayor peso contenido en el directorio ingresado."
@@ -25,11 +25,11 @@ function ayuda {
 	exit
 }
 
-function ErrorParametros {
+ErrorParametros () {
 	echo "Parametro Incorrecto: Utilizar Ejercicio6.sh -h"
 }
 
-function validarDirectorio {
+validarDirectorio () {
 	path=$1
 
 	if ! test -d $path ; then
@@ -38,7 +38,7 @@ function validarDirectorio {
 	fi
 }
 
-function validarParametros {
+validarParametros () {
 	if [ "$1" == "-h" ] || [ "$1" == "-?" ] || [ "$1" == "--help" ] ; then
 		ayuda
 		exit
@@ -52,7 +52,7 @@ function validarParametros {
 	validarDirectorio $1
 }
 
-function leerDirectorio {
+leerDirectorio () {
   dirs=`find "$1" -type d`
   for dir in $dirs; do
     dirs_count=$((`(find "$dir" -type d | wc -l)`-1))
@@ -64,15 +64,32 @@ function leerDirectorio {
   done
 }
 
-function agregarDirectorio {
-  if [ ${#files[@]} == 10 ]; then
-      echo "mas de 10"
-      # lista llena, buscar y reemplazar el menor count en las 3 listas
+reemplazarVector () {
+  menor=${sizes[0]}
+  new_index=0
+
+  for i in {1..9}; do
+    if [[ ${sizes[$i]} -lt $menor ]]; then
+      menor=${sizes[$i]}
+      new_index=$i
+    fi
+  done
+
+  if [[ $3 -gt $menor ]]; then
+    files[$new_index]=$1
+    counts[$new_index]=$2
+    sizes[$new_index]=$3
+  fi
+}
+
+agregarDirectorio () {
+  if [[ ${#files[@]} == 10 ]]; then
+    reemplazarVector
   else
-      files[$index]=$1
-      counts[$index]=$2
-      sizes[$index]=$3
-      ((index++))
+    files[$index]=$1
+    counts[$index]=$2
+    sizes[$index]=$3
+    ((index++))
   fi
 }
 

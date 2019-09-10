@@ -96,7 +96,7 @@ aReemplazar='_'
 
 cModificados=0
 
-for j in `find $path -name "*$aBuscar*"`
+for j in `find $path -type f -name "*$aBuscar*"`
 do
 
  	pathNuevo=$j;

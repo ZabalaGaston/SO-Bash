@@ -1,12 +1,13 @@
 # Trabajo práctico N1 Ejercicio 1
 # Script: Ejercicio1.sh
 # Integrantes:
-# Zabala, Gaston        34614948
-# Pessolani, Agustin	  39670584
+# Cabral, David         39757782
 # Cela, Pablo           36166867
+# Pessolani, Agustin    39670584
 # Sullca, Fernando      37841788
-# yyyyyy, David         XXXXXXXX
+# Zabala, Gaston        34614948
 
+# sed -i 's/\r$//' filename
 ErrorS()
 {
     echo "Error. La sintaxis del script es la siguiente:"

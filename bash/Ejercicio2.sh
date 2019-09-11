@@ -1,11 +1,11 @@
 # Trabajo práctico N1 Ejercicio 2
 # Script: Ejercicio2.sh
 # Integrantes:
-# Zabala, Gaston        34614948
-# Pessolani, Agustin		39670584
-# Cela, Pablo           36166857
+# Cabral, David         39757782
+# Cela, Pablo           36166867
+# Pessolani, Agustin    39670584
 # Sullca, Fernando      37841788
-# yyyyyy, David         XXXXXXXX
+# Zabala, Gaston        34614948
 
 # sed -i 's/\r$//' filename
 # mkdir carpeta1

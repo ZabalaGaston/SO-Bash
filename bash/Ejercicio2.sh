@@ -4,7 +4,7 @@
 # Zabala, Gaston        34614948
 # Pessolani, Agustin		39670584
 # Cela, Pablo           36166857
-# Sullca, Fernando      XXXXXXXX
+# Sullca, Fernando      37841788
 # yyyyyy, David         XXXXXXXX
 
 # sed -i 's/\r$//' filename
@@ -96,7 +96,7 @@ aReemplazar='_'
 
 cModificados=0
 
-for j in `find $path -name "*$aBuscar*"`
+for j in `find $path -type f -name "*$aBuscar*"`
 do
 
  	pathNuevo=$j;

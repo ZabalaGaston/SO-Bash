@@ -5,11 +5,10 @@
 # Pessolani, Agustin	  39670584
 # Cela, Pablo           36166867
 # Sullca, Fernando      37841788
-# yyyyyy, David         XXXXXXXX
-# Funciones
+# Cabral, David         39757782
+##################################
 base_path=$(pwd)
 base_path=$(realpath "$1")
-
 declare -a files=()
 declare -a counts=()
 declare -a sizes=()
@@ -27,18 +26,19 @@ ayuda () {
 
 ErrorParametros () {
 	echo "Parametro Incorrecto: Utilizar Ejercicio6.sh -h"
+  exit
 }
 
 validarDirectorio () {
 	path=$1
 
-	if ! test -d $path ; then
+	if [ ! test -d $path ] ; then
 		echo "Directorio ono encontrado."
 		exit
 	fi
 }
 
-validarParametros () {
+function validarParametros {
 	if [ "$1" == "-h" ] || [ "$1" == "-?" ] || [ "$1" == "--help" ] ; then
 		ayuda
 		exit
@@ -84,7 +84,7 @@ reemplazarVector () {
 
 agregarDirectorio () {
   if [[ ${#files[@]} == 10 ]]; then
-    reemplazarVector
+    reemplazarVector $1 $2 $3
   else
     files[$index]=$1
     counts[$index]=$2

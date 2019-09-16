@@ -164,5 +164,5 @@ do
 done
 
 echo "Cantidad de modificados: "$cModificados
-
+exit 0
 ##################################################

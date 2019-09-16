@@ -7,9 +7,6 @@
 # Sullca, Fernando      37841788
 # Cabral, David         39757782
 ##################################
-base_path=$(pwd)
-base_path=$(realpath "$1")
-
 declare -a files=()
 declare -a count=()
 declare -a sizes=()
@@ -82,7 +79,7 @@ validarParametros () {
     ayuda
   fi
 
-  if test $# -gt 1 ; then
+  if test $# -ne 1 ; then
     errorParametros
   fi
 
@@ -91,6 +88,8 @@ validarParametros () {
 
 ########## MAIN ##########
 validarParametros $1
+base_path=$(pwd)
+base_path=$(realpath "$1")
 leerDirectorio $base_path
 
 for i in {0..9} ; do

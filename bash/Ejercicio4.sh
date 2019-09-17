@@ -87,7 +87,7 @@ function obtenerCantLineasCodigo(){
     $0 ~ /\*\//{
         flagComentarioMulti = 0;
     }
-    flagYaConte == 0 && flagComentarioMulti == 0 && !($0 ~ /\*\/$/){
+    !($0 ~ /\*\/$/) && !($0 ~ /^\/\//) && flagComentarioMulti == 0 && flagYaConte == 0 && $0 != NULL{
         cantLineasCodigo++;
     }
     {
@@ -180,6 +180,7 @@ do
 done
 #Muestro los resultados
 echo "Cantidad de archivos analizados:          "$cantArchivos"."
+echo ""
 #Condición para el caso en que los archivos estén vacíos.
 if [ $cantLineasTotales -gt 0 ]
 then
@@ -187,10 +188,13 @@ then
     porcentajeLineasComentadas=0
     obtenerPorcentajeLineasCodigo
     obtenerPorcentajeLineasComentadas
-    echo "Cantidad de líneas de Codigo totales:     "$porcentajeLineasCodigo"%."
-    echo "Cantidad de líneas Comentadas totales:    "$porcentajeLineasComentadas"%."
+    echo "Cantidad de líneas de Código totales:     "$cantLineasCodigo"."
+    echo "Porcentaje de líneas de Código:           "$porcentajeLineasCodigo"%."
+    echo ""
+    echo "Cantidad de líneas Comentadas totales:    "$cantLineasComentadas"."
+    echo "Porcentaje de líneas Comentadas:          "$porcentajeLineasComentadas"%."
 else
-    echo "La cantidad de líneas es de cero."
+    echo "La cantidad de líneas analizadas es de cero."
 fi
 
 exit 0

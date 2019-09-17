@@ -15,7 +15,7 @@ leerDirectorio () {
   dirs=`find "$1" -type d`
   for dir in $dirs ; do
     dirs_count=$((`(find "$dir" -type d | wc -l)` -1))
-    if [ $dirs_count == 0 ] ; then
+    if [[ $dirs_count -eq 0 && -r $dir ]] ; then
       count=`find "$dir" -maxdepth 1 -type f | wc -l`
       size=`find "$dir" -maxdepth 1 -type f | wc -c`
       agregarDirectorio "$dir" $count $size
@@ -58,19 +58,19 @@ ayuda () {
   echo "Una lista con los 10 subdirectorios con mayor peso."
   echo -e " Parametros"
   echo -e "   directorio_a_recorrer: directorio donde se buscan los subdirectorios"
-  exit
+  exit 4
 }
 
 errorParametros () {
   echo "Parametro Incorrecto: Utilizar Ejercicio6.sh -h"
-  exit
+  exit 1
 }
 
 validarDirectorio () {
   path=$1
   if ! test -d $path ; then
     echo "Directorio no encontrado."
-    exit
+    exit 1
   fi
 }
 
@@ -86,7 +86,23 @@ validarParametros () {
   validarDirectorio $1
 }
 
+calcularBytes () {
+  b=${1:-0};
+  d='';
+  s=0;
+  S=(Bytes {K,M,G,T,P,E,Z,Y}iB)
+  while ((b > 1024)); do
+    d="$(printf ".%02d" $((b % 1024 * 100 / 1024)))"
+    b=$((b / 1024))
+    let s++
+  done
+  res="$b$d ${S[$s]}"
+  return $res
+}
+
 ########## MAIN ##########
+IFS='
+'
 validarParametros $1
 base_path=$(pwd)
 base_path=$(realpath "$1")
@@ -94,6 +110,8 @@ leerDirectorio $base_path
 
 for i in {0..9} ; do
   if [ ${files[$i]} ]; then
-    echo "${files[$i]} | ${sizes[$i]} B | ${counts[$i]} files"
+    echo "${files[$i]} | `calcularBytes ${sizes[$i]}` | ${counts[$i]} files"
   fi
 done
+
+exit 0

@@ -96,8 +96,7 @@ calcularBytes () {
     b=$((b / 1024))
     let s++
   done
-  res="$b$d ${S[$s]}"
-  return $res
+  echo "$b$d ${S[$s]}"
 }
 
 ########## MAIN ##########

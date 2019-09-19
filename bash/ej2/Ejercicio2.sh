@@ -19,9 +19,9 @@
 # Funciones
 function ayuda(){
 	echo ""
-    	echo "Uso: ./Ejercicio2.sh directorio_recorrer -r[Opcional]"
-    	echo "Reemplaza espacios en blanco por un guión bajo, en el nombre de los archivos"
-    	echo -e "   Parametros"
+	echo "Uso: ./Ejercicio2.sh directorio_recorrer -r[Opcional]"
+	echo "Reemplaza espacios en blanco por un guión bajo, en el nombre de los archivos"
+	echo -e "   Parametros"
 	echo -e "   \directorio_recorrer : directorio donde se buscan los archivos"
 	echo -e "   -r [Opcional], permite recorrer el directorio recursivamente "
 	exit
@@ -34,8 +34,10 @@ function func_MostrarMensajeErrorParametros
 
 function func_esRecursiva
 {
-	if [ $# == 2 ] && [ "$2" != "-r" ]
+	if [ $# == 2 ] && [ "$rec" != "-r" ]
 	then
+    echo 'entro aca'
+    echo $# " | "$rec" | "
 		func_MostrarMensajeErrorParametros
 		exit
 	fi
@@ -75,8 +77,14 @@ function func_validarParametros
 		path='.'
     fi
 
+	if [ "$1" == "-r" ]
+	then
+    path='.'
+		rec='-r'
+	fi
+
 	func_ValidarDirectorio $path
-	func_esRecursiva $path $2
+	func_esRecursiva $path $rec
 }
 
 #Agregamos para que los directorios funcionen con espacios
@@ -88,8 +96,9 @@ function func_ConfiguracionDirectorio
 ############################################MAIN##########################################################
 
 path=$1
+rec=$2
 func_ConfiguracionDirectorio
-func_validarParametros $path $2
+func_validarParametros $path $rec
 
 aBuscar=' '
 aReemplazar='_'
@@ -99,11 +108,13 @@ cModificados=0
 for j in `find $path -type f -name "*$aBuscar*"`
 do
 
- 	pathNuevo=$j;
+  pathNuevo=$j;
 	dname=`dirname $j`
 
-	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]))
+	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]) || ( test $# -lt 2 && [ "$rec" == "-r" ]))
+
 	then
+    echo 'entro'
 		pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
 			ruta=""
         	pos=0
@@ -111,25 +122,20 @@ do
 			}
    			{
         		split($NF,name," ")
-
         		#Obtengo la cantidad de posiciones
         		for (x in name){
             			pos++
         		}
-
         		#recorro hasta la ante ultima posicion
         		for (n=0;n<pos-1;n++){
             			nombre=nombre name[n+1] "_"
         		}
-
         		#Le concateno la ultima parte
         		nombre=nombre name[pos]
-
         		#Rearmo la ruta
         		for(i=1;i<NF;i++){
             			ruta=ruta $i "/"
         		}
-
     		print ruta""nombre}')
 
 		add=0
@@ -164,5 +170,4 @@ do
 done
 
 echo "Cantidad de modificados: "$cModificados
-exit 0
 ##################################################

@@ -1,9 +1,16 @@
-#!/bin/bash
+# Trabajo práctico N1 Ejercicio 3
+# Script: Ejercicio3.sh
+# Integrantes:
+# Cabral, David         39757782
+# Cela, Pablo           36166867
+# Pessolani, Agustin    39670584
+# Sullca, Fernando      37841788
+# Zabala, Gaston        34614948
 
 get_help(){
     echo "Ejercicio 3"
     echo "Ayuda: "
-    echo "start: Inicia la ejecución del demonio, debe solicitar por parámetro el directorio a salvar, el directorio donde guardar el backup y el intervalo de tiempo entre backups (expresado en segundos). -start /home/usuario(origen) /home/usuario(destino) 100(intervalo)"
+    echo "start: Inicia la ejecución del demonio, debe solicitar por parámetro el directorio a salvar, el directorio donde guardar el backup y el intervalo de tiempo entre backups (expresado en segundos). Ejm: -start /home/usuario(origen) /home/usuario(destino) 100(intervalo)"
     echo "stop: Finalizar el demonio. Ejm -stop"
     echo "count: Indica la cantidad de archivos de backup hay en el directorio. Param: -count"
     echo "clear: Limpia el directorio de backup, recibe por parámetro la cantidad de backup que mantiene en la carpeta, siendo estos los últimos generados. Si no se recibe ningún parámetro se toma el valor cero. Ejm -clear 10(Opcional)"
@@ -11,11 +18,10 @@ get_help(){
 }
 
 comenzar(){
-    
+
     SRCDIR=$1
     DESTDIR=$2
     INTERVAL=$3
-    FILENAME=bkp-$(date +%-Y%-m%-d)-$(date +%-T).tgz
 
     salida()
     {
@@ -26,7 +32,8 @@ comenzar(){
     ##################
     iteracion()
     {
-        #tar --create --gzip --file=$DESTDIR$FILENAME $SRCDIR
+        FILENAME=bkp-$(date +%-Y%-m%-d)-$(date +%-T).tgz
+        #creo bkp
         tar -czvf $DESTDIR"/"$FILENAME $SRCDIR 2> /dev/null > /dev/null
         #ejecutamos sleep en un fork de este programa
         sleep $INTERVAL &
@@ -35,7 +42,7 @@ comenzar(){
         # Esperamos a que el último proceso lanzado acabe.
         # Wait en bash sí que admite señales asíncronas.
         wait $SLEEP_PID
-        
+
     }
     ##################
     trap salida SIGTERM SIGKILL
@@ -45,8 +52,6 @@ comenzar(){
 
     while true
     do
-        # hacer lo que sea
-        #echo "iteracion"
         # esperar
         iteracion
     done
@@ -62,10 +67,8 @@ fi;
 
 #Creacion del servicio de Bkp
 if [ $# == 4 ] && [ $1 == -start ] && [ -d $2 ] && [ -d $3 ] && [[ $4 =~ $ES_NUMERO ]]; then
-    VAL_PROCESS=""
-    VAL_PROCESS=$(ps -e | grep Ejercicio3.sh)
-    echo "-"$VAL_PROCESS"-"
-    if [[ ! -z VAL_PROCESS ]]; then
+
+    if [[ ! -f /tmp/DESTDIR.txt ]]; then
         echo "Comienza el bkp"
         echo "Directorio de bkp: "$3
         comenzar $2 $3 $4 &
@@ -76,8 +79,7 @@ if [ $# == 4 ] && [ $1 == -start ] && [ -d $2 ] && [ -d $3 ] && [[ $4 =~ $ES_NUM
     fi;
 elif [ $# == 1 ] && [ $1 == -stop ]; then
     #Validar si existe el servicio en ejecucion
-    PROCESS=`ps -e | grep Ejercicio3.sh`
-    if [ PROCESS ]; then
+    if [[ -f /tmp/DESTDIR.txt ]]; then
         #Elimino archivos temporales
         rm /tmp/DESTDIR.txt
         rm /tmp/SRCDIR.txt
@@ -91,8 +93,7 @@ elif [ $# == 1 ] && [ $1 == -stop ]; then
     fi;
 elif [ $# == 1 ] && [ $1 == -play ]; then
     #Validar si existe el servicio en ejecucion
-    PROCESS=`ps -e | grep Ejercicio3.sh`
-    if [ PROCESS ]; then
+    if [[ -f /tmp/DESTDIR.txt ]]; then
         #Variables necesarias para realizar el bkp
         DESTDIR=`cat /tmp/DESTDIR.txt`
         SRCDIR=`cat /tmp/SRCDIR.txt`
@@ -105,19 +106,40 @@ elif [ $# == 1 ] && [ $1 == -play ]; then
         exit 0
     fi;
 elif [ $# == 1 ] && [ $1 == -count ]; then
+    if [[ -f /tmp/DESTDIR.txt ]]; then
         #Cantidad de bkp en el directorio asignado
         echo "Cantidad de archivos en el directorio: "
-        cat DESTDIR.txt | ls | grep .tgz | wc -l
+        cat /tmp/DESTDIR.txt | ls | grep .tgz | wc -l
         exit 0
-elif [ $# == 2 ] && [ $1 == -clear ]; then
-    #Validar parametro de cantidad a mantener
-    if [ $2 == "" ]; then
-        CANT_BKP=0
-    elif [ $2 =~ $ES_NUMERO ]; then
-        CANT_BKP=$2
     else
-        echo "No se validaron los parametros."
-        exit 0;
+        echo "No hay un servicio en ejecucion."
+        exit 0
+    fi;
+elif [ $1 == -clear ]; then
+    #La validacion del archivo es para asegurarse dle servicio en ejecucion
+    if [[ -f /tmp/DESTDIR.txt ]]; then
+        #Validar parametro de cantidad a mantener
+        if [ -z $2 ]; then
+            CANT_BKP=0
+        elif [[ $2 =~ $ES_NUMERO ]]; then
+            CANT_BKP=$2
+        else
+            echo "No se validaron los parametros."
+            exit 0;
+        fi;
+        ##Cantidad de archivos a limpiar
+        I=0
+        DESTDIR=`cat /tmp/DESTDIR.txt`
+        while read LINE
+        do
+            rm $DESTDIR"/"$LINE
+            (( I++ ))
+        done < <(ls -lt | grep tgz | awk 'NR > '$CANT_BKP'{ print $9 }')
+        echo "Se eliminaron "$I" bkp."
+        exit 0
+    else
+        echo "No hay un servicio en ejecucion."
+        exit 0
     fi;
 else
     echo "No se validaron los parametros."

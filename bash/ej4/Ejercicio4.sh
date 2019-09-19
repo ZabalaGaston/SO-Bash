@@ -1,10 +1,9 @@
-#!/bin/bash
 # Trabajo práctico N1 Ejercicio 4
 # Script: Ejercicio4.sh
 # Integrantes:
 # Cabral, David         39757782
 # Cela, Pablo           36166857
-# Pessolani, Agustin	39670584
+# Pessolani, Agustin		39670584
 # Sullca, Fernando      37841788
 # Zabala, Gaston        34614948
 
@@ -12,12 +11,12 @@
 #Función con la ayuda del script.
 function ayuda(){
 	echo ""
-    echo "Uso: ./Ejercicio4.sh directorio_recorrer extension"
-    echo "Programa que informa: "
-    echo "Cantidad de archivos analizados."
-    echo "Cantidad de líneas de código totales, como su porcentaje contra el total de líneas de los archivos analizados."
-    echo "Cantidad de líneas de comentarios"
-    echo -e "Parametros"
+  echo "Uso: ./Ejercicio4.sh directorio_recorrer extension"
+  echo "Programa que informa: "
+  echo "Cantidad de archivos analizados."
+  echo "Cantidad de líneas de código totales, como su porcentaje contra el total de líneas de los archivos analizados."
+  echo "Cantidad de líneas de comentarios"
+  echo -e "Parametros"
 	echo -e "\directorio_recorrer : directorio donde se buscan los archivos"
 	echo -e "extension: extension de los archivos a analizar "
 	exit 1
@@ -109,19 +108,19 @@ function obtenerCantLineasComentadas(){
     }
     $0 ~ /\/\// || flagComentarioMulti == 1{
         cantLineasComentadas++;
-        flagYaConte = 1;  
+        flagYaConte = 1;
     }
-    $0 ~ /\/\*/ { 
+    $0 ~ /\/\*/ {
         if(flagYaConte == 0)
             cantLineasComentadas++;
         flagComentarioMulti = 1;
     }
-    $0 ~ /\*\//{ 
+    $0 ~ /\*\//{
         flagComentarioMulti = 0;
     }
     {
         flagYaConte = 0;
-    }   
+    }
     END{
         print cantLineasComentadas;
     }' $j)
@@ -131,7 +130,7 @@ function obtenerCantLineasComentadas(){
 #Función para obtener el porcentaje de líneas de código.
 function obtenerPorcentajeLineasCodigo(){
     porcentajeLineasCodigo=$(awk -v cantLineasCodigo="$cantLineasCodigo" -v cantLineasTotales="$cantLineasTotales" '
-    BEGIN{ 
+    BEGIN{
         print ((cantLineasCodigo / cantLineasTotales) * 100)
     }')
 }
@@ -139,7 +138,7 @@ function obtenerPorcentajeLineasCodigo(){
 #Función para obtener el porcentaje de líneas comentadas.
 function obtenerPorcentajeLineasComentadas(){
     porcentajeLineasComentadas=$(awk -v cantLineasComentadas="$cantLineasComentadas" -v cantLineasTotales="$cantLineasTotales" '
-    BEGIN{ 
+    BEGIN{
         print ((cantLineasComentadas / cantLineasTotales) * 100)
     }')
 }
@@ -150,7 +149,7 @@ IFS='
 '
 #Validaciones de los parámetros.
 validarPrimerParametro $1
-if test $# -ne 2 
+if test $# -ne 2
 then
     mostrarMensajeErrorParametros
     exit 5
@@ -171,12 +170,12 @@ do
     _AuxcantLineasComentadas=0
     _AuxcantLineasCodigo=0
 
-    
+
     obtenerCantLineas $j
     obtenerCantLineasComentadas
     obtenerCantLineasCodigo
-    
-    cantArchivos=`expr $cantArchivos + 1` 
+
+    cantArchivos=`expr $cantArchivos + 1`
 done
 #Muestro los resultados
 echo "Cantidad de archivos analizados:          "$cantArchivos"."

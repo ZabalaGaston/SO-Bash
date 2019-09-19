@@ -1,11 +1,11 @@
 # Trabajo práctico N1 Ejercicio 6
 # Script: Ejercicio6.sh
 # Integrantes:
-# Zabala, Gaston        34614948
-# Pessolani, Agustin	  39670584
-# Cela, Pablo           36166867
-# Sullca, Fernando      37841788
 # Cabral, David         39757782
+# Cela, Pablo           36166857
+# Pessolani, Agustin		39670584
+# Sullca, Fernando      37841788
+# Zabala, Gaston        34614948
 ##################################
 declare -a files=()
 declare -a count=()

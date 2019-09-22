@@ -77,7 +77,7 @@ function func_validarParametros
 		path='.'
     fi
 
-	if [ "$1" == "-r" ]
+	if [ "$1" == "-r" ] && test $# -eq 1
 	then
     path='.'
 		rec='-r'

@@ -36,8 +36,6 @@ function func_esRecursiva
 {
 	if [ $# == 2 ] && [ "$rec" != "-r" ]
 	then
-    echo 'entro aca'
-    echo $# " | "$rec" | "
 		func_MostrarMensajeErrorParametros
 		exit
 	fi
@@ -50,12 +48,14 @@ function func_ValidarDirectorio
    	if ! test -e $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no existente"
+		echo "Para más información utilizar Ejercicio2.sh -h para verificar funcionamiento del comando"
 		exit
 	fi
 
 	if ! test -d $path
 	then
 		echo "Parametro Incorrecto: Ruta ingresada no es directorio"
+		echo "Para más información utilizar Ejercicio2.sh -h para verificar funcionamiento del comando"
 		exit
 	fi
 }
@@ -77,7 +77,7 @@ function func_validarParametros
 		path='.'
     fi
 
-	if [ "$1" == "-r" ]
+	if [ "$1" == "-r" ] && test $# -eq 1
 	then
     path='.'
 		rec='-r'
@@ -109,12 +109,12 @@ for j in `find $path -type f -name "*$aBuscar*"`
 do
 
   pathNuevo=$j;
-	dname=`dirname $j`
+  dname=`dirname $j`
 
-	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]) || ( test $# -lt 2 && [ "$rec" == "-r" ]))
+
+	if ([ $# == 2 ] || ( test $# -lt 2 && [ "$path" == "$dname" ]) || ( test $# -lt 2 && [ "$rec" == "-r" ]) || ( test $# -lt 2 && [ "$path" == "$dname/" ]))
 
 	then
-    echo 'entro'
 		pathNuevo=$(echo $j | awk -F'/' 'BEGIN{
 			ruta=""
         	pos=0
@@ -154,9 +154,9 @@ do
 				then
 				_sinExt=${_arch%%.*}
 				_ext="."${_arch##*.}
-				_dirOk=$_sinExt""$add""$_ext
+				_dirOk=$_sinExt"("$add")"$_ext
 			else
-				_dirOk=$_arch""$add
+				_dirOk=$_arch"("$add")"
 			fi
 
 			pathNuevo=$_dir""$_dirOk

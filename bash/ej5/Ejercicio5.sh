@@ -58,8 +58,7 @@ function func_ConfigurarPapelera()
    	if ! test -d "/home/$USER/.Papelera"
 	then
 		#echo "Creando Papelera de reciclaje para el usuario $USER"
-		sudo cd "/home/$USER"
-		mkdir ".Papelera"
+		mkdir "/home/$USER/.Papelera"
 		#exit
 	fi
 }
@@ -96,12 +95,10 @@ function func_validarParametros
 	fi
 
 
-	if [ "$1" == "-r" ] ;then
+	if [ "$1" == "-r" ] && [ $# == 1 ] ;then
 	#echo "parametros -r "
-		if [ $# == 1 ] ; then
 			func_MostrarMensajeErrorParametros
 			exit
-			fi
 	fi
 }
 

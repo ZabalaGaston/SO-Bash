@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Trabajo práctico N1 Ejercicio 3
 # Script: Ejercicio3.sh
 # Integrantes:
@@ -59,8 +61,13 @@ comenzar(){
 
 ES_NUMERO='^-?[0-9]+([.][0-9]+)?$'
 
+if [ $# == 0 ]; then
+    echo "Debe ingresar algun parametro."
+    exit 0
+fi;
+
 #Mostra ayuda
-if [ $1 == -h ] || [ $1 == -help ] || [ $1 == -? ]; then
+if [ $1 == -h ] || [ $1 == --help ] || [ $1 == -? ] || [ $1 == -help ]; then
     get_help
     exit 0
 fi;
@@ -108,8 +115,9 @@ elif [ $# == 1 ] && [ $1 == -play ]; then
 elif [ $# == 1 ] && [ $1 == -count ]; then
     if [[ -f /tmp/DESTDIR.txt ]]; then
         #Cantidad de bkp en el directorio asignado
+        DESTDIR=`cat /tmp/DESTDIR.txt`
         echo "Cantidad de archivos en el directorio: "
-        cat /tmp/DESTDIR.txt | ls | grep .tgz | wc -l
+        ls $DESTDIR | grep .tgz | wc -l
         exit 0
     else
         echo "No hay un servicio en ejecucion."
@@ -122,7 +130,7 @@ elif [ $1 == -clear ]; then
         if [ -z $2 ]; then
             CANT_BKP=0
         elif [[ $2 =~ $ES_NUMERO ]]; then
-            CANT_BKP=$2
+            CANT_BKP=$2s
         else
             echo "No se validaron los parametros."
             exit 0;
@@ -134,7 +142,7 @@ elif [ $1 == -clear ]; then
         do
             rm $DESTDIR"/"$LINE
             (( I++ ))
-        done < <(ls -lt | grep tgz | awk 'NR > '$CANT_BKP'{ print $9 }')
+        done < <(ls -lt $DESTDIR| grep tgz | awk 'NR > '$CANT_BKP'{ print $9 }')
         echo "Se eliminaron "$I" bkp."
         exit 0
     else

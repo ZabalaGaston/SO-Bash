@@ -169,13 +169,14 @@ function func_eliminarArchivo
 	_dirNueva=$_dirOrigen"/"$NombreNuevo
 	#echo $_dirNueva
 	touch "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
+	chmod 600 "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
 	readlink -f $_dirNueva >> "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
 	mv $_dirNueva "/home/$USER/.Papelera"
 }
 
 ########################MAIN######################################
-func_validarParametros $1 $2
 func_ConfiguracionDirectorio
+func_validarParametros $1 $2
 func_ConfigurarPapelera
 path=$1
 

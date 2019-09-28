@@ -1,4 +1,4 @@
-# Trabajo práctico N1 Ejercicio 1
+# Trabajo práctico N1 Ejercicio 1 ReEntrega
 # Script: Ejercicio1.sh
 # Integrantes:
 # Cabral, David         39757782
@@ -18,7 +18,7 @@ ErrorS()
 }
 ErrorP()
 {
-    echo "Error. nombre_archivo incorrecto"
+    echo "Error. El archivo ingresado no tiene permisos de lectura"
 }
 
 #Valida cantidad de parámetros menor a 2
@@ -26,19 +26,20 @@ if test $# -lt 2; then
     ErrorS
 fi
 
+# Valida si el primer parámetro tiene permisos de lectura
 if ! [ -r "$1" ]; then
- ErrorP
+ ErrorP $1
  # Valida si el parametro1 es un archivo y el parametro2 es L ó C ó M.
  # Si no cumple la condicion, muestra un mensaje de error
 elif test -f $1 && (test "$2" = "L" || test "$2" = "C" || test "$2" = "M"); then
- if test $2 = "L"; then
+ if test $2 = "L"; then #Cuenta el numero de líneas
     res=` wc -l $1 `
     echo "Numero de líneas: $res"
- elif test $2 = "C"; then
-    res=` wc -m $1 `
+ elif test $2 = "C"; then 
+    res=` wc -m $1 ` #Cuenta el número de caracteres
     echo "Número de caracteres: $res"
 elif test $2 = "M"; then
-    res=` wc -L $1 `
+    res=` wc -L $1 ` #Cuenta la longitud mas larga 
     echo "Longitud de la línea más larga: $res"
  fi
 else
@@ -48,9 +49,12 @@ fi
 
 #Responda:
 #a) ¿Cuál es el objetivo de este script?
-    # El objetivo del script es realizar alguna acción en base al parámetro ingresado.
+# El objetivo del script es informar número de líneas ó número de caracteres ó longitud de la línea más larga de un 
+# archivo pasado por parámetro.
+# En el caso de que el parámetro ingresado por el correcto no sea válido, arroja un mensaje de error.
+
 #b) ¿Qué parámetros recibe?
-    # Recibe el nombre del script, nombre del archivo e instrucción a realizar para con el archivo.
+    # Recibe nombre del archivo e instrucción a realizar para con el archivo.
 #c) Comentar el código según la funcionalidad (no describa los comandos, indique la lógica)
 #d) Completar los “echo” con el mensaje correspondiente.
 #e) ¿Qué información brinda la variable “$#”? ¿Qué otras variables similares conocen? Explíquelas.

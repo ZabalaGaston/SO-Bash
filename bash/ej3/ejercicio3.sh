@@ -91,7 +91,10 @@ elif [ $# == 1 ] && [ $1 == -stop ]; then
         rm /tmp/DESTDIR.txt
         rm /tmp/SRCDIR.txt
         #Kill Service
-        killall -9 Ejercicio3.sh 2> /dev/null > /dev/null
+        #killall -9 Ejercicio3.sh 2> /dev/null > /dev/null
+        pd=$(ps u | grep "./Ejercicio3.sh" | awk '$12== "./Ejercicio3.sh" {print $2}')
+        p=(${pd// / })
+        kill -9 ${p[0]}
         echo "BKP Service eliminado."
         exit 0
     else

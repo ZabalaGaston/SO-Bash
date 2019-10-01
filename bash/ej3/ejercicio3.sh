@@ -138,7 +138,7 @@ elif [ $1 == -clear ]; then
         if [ -z $2 ]; then
             CANT_BKP=0
         elif [[ $2 =~ $ES_NUMERO ]]; then
-            CANT_BKP=$2s
+            CANT_BKP=$2
         else
             echo "No se validaron los parametros."
             exit 0;

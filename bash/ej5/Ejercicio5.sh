@@ -53,12 +53,13 @@ function func_ConfiguracionDirectorio()
 }
 
 #Agregamos La papelera De reciclaje
-function func_ConfigurarPapelera()
+function func_ConfigurarPapelera
 { #echo "ConfigurarPapelera"
-   	if ! test -d "/home/$USER/.Papelera"
+   		# "/home/$USER/.Papelera"
+   	if ! test -d $1 
 	then
 		#echo "Creando Papelera de reciclaje para el usuario $USER"
-		mkdir "/home/$USER/.Papelera"
+		mkdir $1
 		#exit
 	fi
 }
@@ -123,6 +124,7 @@ function func_ValidarDirectorio
 function func_eliminarArchivo
 {
   path=$1
+  papelera=$2
 	func_ValidarDirectorio $path
  # echo "Eliminando Archivo..."
  	_nombreArchivo=${path##*/}
@@ -137,12 +139,10 @@ function func_eliminarArchivo
 		# o al final del archivo
 		Contador=0
 		NombreNuevo=$_nombreArchivo
-		pAux=$_nombreArchivo
-		while [ -f  "/home/$USER/.Papelera/$NombreNuevo"  ]
+		_arch=$_nombreArchivo
+		while [ -f   $papelera"/"$NombreNuevo  ]
 		do
 			Contador=`expr $Contador + 1`
-
-			_arch=${pAux##*/}
 
 			if [[ $_arch =~ "." ]]
 				then
@@ -163,53 +163,57 @@ function func_eliminarArchivo
 		mv $_dirOrigen"/"$_nombreArchivo  $_dirOrigen"/"$NombreNuevo
 		fi
 
-	#control de cambios por cada archivo resultante
-
+		#control de cambios por cada archivo resultante(si no cambio el nombre, sigue siendo el original)
+	#echo $1" "$_nombreArchivo" "$NombreNuevo 
 	#echo "Moviendo a la papelera..."
 	_dirNueva=$_dirOrigen"/"$NombreNuevo
 	#echo $_dirNueva
-	touch "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
+	touch  $papelera"/.$NombreNuevo.trashinfo"
 	chmod 600 "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
-	readlink -f $_dirNueva >> "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
+	readlink -f $_dirNueva >> $papelera"/.$NombreNuevo.trashinfo"
 	mv $_dirNueva "/home/$USER/.Papelera"
+	echo "Archivo $_nombreArchivo Eliminado."
 }
 
 ########################MAIN######################################
 func_ConfiguracionDirectorio
 func_validarParametros $1 $2
-func_ConfigurarPapelera
 path=$1
-
 #1 parametro: rm(archivo) 'archivo a elimnar'
+#echo ~
+pathUsuario=~ 
+pathPapelera=$pathUsuario"/.Papelera"
+#echo $pathPapelera
+func_ConfigurarPapelera $pathPapelera
 
 if  [ "$1" == "-l" ]
  then
 	#echo "listar archivos archivo -> /home/$USER/papelera"
-	ls "/home/$USER/.Papelera/"
+	ls  $pathPapelera -l
 	exit
 	fi
 
 if  [ "$1" == "-e" ]
  then
 	#echo "vaciar papelera -> /home/$USER/papelera"
-	cd "/home/$USER/.Papelera"
+	cd $pathPapelera  
 	rm -f *
-	rm -f .*.trashinfo
+	rm -f .*.trashinfo	
+	echo "Papelera Limpia"
 	exit
 	fi
 
 
 if [ "$1" != "-r" ]
 then
- 	func_eliminarArchivo $1
+ 	func_eliminarArchivo $path $pathPapelera
 exit 1
 fi
 
 if [ $1 == "-r" ]
 then
 	path=$2
-	cd "/home/$USER/.Papelera"
-	anterior=$2
+	cd $pathPapelera 
 	#Busca el archivo
 	if find  $path
 	then
@@ -221,6 +225,7 @@ then
 	#	echo  "Carpeta Destino: " $_dir
  	mv $path $_dir
 	rm $pathOrigen
+	echo "Archivo Recuperado"
 	else
 	 echo "Archivo NO encontrado"
 	fi

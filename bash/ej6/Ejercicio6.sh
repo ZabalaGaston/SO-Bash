@@ -12,12 +12,12 @@ declare -a count=()
 declare -a sizes=()
 
 leerDirectorio () {
-  dirs=`find "$1" -type d`
+  dirs=`find "$1" -type d -print 2>/dev/null`
   for dir in $dirs ; do
-    dirs_count=$((`(find "$dir" -type d | wc -l)` -1))
+    dirs_count=$((`(find "$dir" -type d -print 2>/dev/null | wc -l)` -1))
     if [[ $dirs_count -eq 0 && -r $dir ]] ; then
-      count=`find "$dir" -maxdepth 1 -type f | wc -l`
-      size=`find "$dir" -maxdepth 1 -type f | wc -c`
+      count=`find "$dir" -maxdepth 1 -type f -print 2>/dev/null | wc -l`
+      size=`find "$dir" -maxdepth 1 -type f -print 2>/dev/null | wc -c`
       agregarDirectorio "$dir" $count $size
     fi
   done

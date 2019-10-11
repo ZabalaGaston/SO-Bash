@@ -168,10 +168,11 @@ function func_eliminarArchivo
 	#echo "Moviendo a la papelera..."
 	_dirNueva=$_dirOrigen"/"$NombreNuevo
 	#echo $_dirNueva
+	
 	touch  $papelera"/.$NombreNuevo.trashinfo"
-	chmod 600 "/home/$USER/.Papelera/.$NombreNuevo.trashinfo"
+	chmod 600 $papelera"/.$NombreNuevo.trashinfo"
 	readlink -f $_dirNueva >> $papelera"/.$NombreNuevo.trashinfo"
-	mv $_dirNueva "/home/$USER/.Papelera"
+	mv $_dirNueva $papelera"/.Papelera"
 	echo "Archivo $_nombreArchivo Eliminado."
 }
 

@@ -172,7 +172,7 @@ function func_eliminarArchivo
 	touch  $papelera"/.$NombreNuevo.trashinfo"
 	chmod 600 $papelera"/.$NombreNuevo.trashinfo"
 	readlink -f $_dirNueva >> $papelera"/.$NombreNuevo.trashinfo"
-	mv $_dirNueva $papelera"/.Papelera"
+	mv $_dirNueva $papelera
 	echo "Archivo $_nombreArchivo Eliminado."
 }
 

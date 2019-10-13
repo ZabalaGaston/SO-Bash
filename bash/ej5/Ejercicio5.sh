@@ -126,7 +126,7 @@ function func_eliminarArchivo
   path=$1
   papelera=$2
 	func_ValidarDirectorio $path
- # echo "Eliminando Archivo..."
+ 
  	_nombreArchivo=${path##*/}
  # echo "Nombre de archivo $_nombreArchivo"
   	_dirAbs=$( readlink -f $path)
@@ -139,18 +139,18 @@ function func_eliminarArchivo
 		# o al final del archivo
 		Contador=0
 		NombreNuevo=$_nombreArchivo
-		_arch=$_nombreArchivo
+		
 		while [ -f   $papelera"/"$NombreNuevo  ]
 		do
 			Contador=`expr $Contador + 1`
 
-			if [[ $_arch =~ "." ]]
+			if [[ $_nombreArchivo =~ "." ]]
 				then
-				_sinExt=${_arch%%.*}
-				_ext="."${_arch##*.}
-				_dirOk=$_sinExt""$Contador""$_ext
+				_sinExt=${_nombreArchivo%%.*}
+				_ext="."${_nombreArchivo##*.}
+				_dirOk=$_sinExt"("$Contador")"$_ext
 			else
-				_dirOk=$_arch""$Contador
+				_dirOk=$_nombreArchivo""$Contador
 			fi
 			NombreNuevo=$_dirOk
 
@@ -160,20 +160,19 @@ function func_eliminarArchivo
 		then
 	#	echo "cambiando nombre  $_nombreArchivo Nuevo: " $NombreNuevo
 	#Cambio  el nombre del archivo
-		mv $_dirOrigen"/"$_nombreArchivo  $_dirOrigen"/"$NombreNuevo
+		mv $_dirAbs  $_dirOrigen"/"$NombreNuevo
 		fi
 
 		#control de cambios por cada archivo resultante(si no cambio el nombre, sigue siendo el original)
-	#echo $1" "$_nombreArchivo" "$NombreNuevo 
-	#echo "Moviendo a la papelera..."
+	
 	_dirNueva=$_dirOrigen"/"$NombreNuevo
 	#echo $_dirNueva
 	
 	touch  $papelera"/.$NombreNuevo.trashinfo"
 	chmod 600 $papelera"/.$NombreNuevo.trashinfo"
-	readlink -f $_dirNueva >> $papelera"/.$NombreNuevo.trashinfo"
+	readlink -f $_dirAbs >> $papelera"/.$NombreNuevo.trashinfo"
 	mv $_dirNueva $papelera
-	echo "Archivo $_nombreArchivo Eliminado."
+	echo "Archivo \"$_nombreArchivo\" Eliminado."
 }
 
 ########################MAIN######################################
@@ -212,23 +211,33 @@ exit 1
 fi
 
 if [ $1 == "-r" ]
-then
+then	
 	path=$2
 	cd $pathPapelera 
 	#Busca el archivo
-	if find  $path
+	if [ -f $path ] 
 	then
 	#	echo "Archivo encontrado"
 	pathOrigen=".$2.trashinfo"
 	read -r FIRSTLINE < $pathOrigen
 	#	echo $FIRSTLINE
+	_nombreOrigen=${FIRSTLINE##*/} 
 	_dir=${FIRSTLINE%/*}
 	#	echo  "Carpeta Destino: " $_dir
- 	mv $path $_dir
+	mv $path $_dir
+		if [ $path != $_nombreOrigen ]
+	  	then
+		echo  "nombre original: " $_nombreOrigen
+		#echo  "cambiando nombre: " $_nombreOrigen
+		#echo $_dir"/"$path
+		#echo $_dir"/"$_nombreOrigen
+		mv $_dir"/"$path $_dir"/"$_nombreOrigen
+		fi
 	rm $pathOrigen
 	echo "Archivo Recuperado"
-	else
-	 echo "Archivo NO encontrado"
+	else 
+	echo "Archivo \"$path\" No encontrado"
+
 	fi
 fi
 

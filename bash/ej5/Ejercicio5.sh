@@ -224,15 +224,15 @@ then
 	_nombreOrigen=${FIRSTLINE##*/} 
 	_dir=${FIRSTLINE%/*}
 	#	echo  "Carpeta Destino: " $_dir
+	mv $path $_dir
 		if [ $path != $_nombreOrigen ]
 	  	then
-		#echo  "nombre original: " $_nombreOrigen
-		mv $path $_nombreOrigen
-		echo  "cambiando nombre Original: " $_nombreOrigen
-		mv $_nombreOrigen $_dir	
-  		else 
-		mv $path $_dir
- 		fi
+		echo  "nombre original: " $_nombreOrigen
+		#echo  "cambiando nombre: " $_nombreOrigen
+		#echo $_dir"/"$path
+		#echo $_dir"/"$_nombreOrigen
+		mv $_dir"/"$path $_dir"/"$_nombreOrigen
+		fi
 	rm $pathOrigen
 	echo "Archivo Recuperado"
 	else 
